@@ -1,6 +1,9 @@
-*******************************
-*         SlightTSDB          *
-*******************************
+******************************************************************************
+*                             SlightTSDB                                     *
+*  Author : Antonio Franco                                                   *
+*  ver : 0.1                                                                 *
+*  date : 27/01/2014                                                         *
+******************************************************************************
 
 A slight Time Series Data Base
 
@@ -91,21 +94,76 @@ Data Recording : The Data Point values are recorded into a Cache (allocated in t
 								3 = Sum. Calculate the sum of values for the time window
 								4 = Min. Set the Minimum value received for the time window
 								5 = Max. Set the Maximum value received for the time window 
-								6 = Weight. The Mean of values inside the time window, weighted 
-									by the interval of duration of the sample 
+								6 = Weight. The Mean of values inside the time window,
+								    weighted by the interval of duration of the sample 
 								7 = None. Store the last value as rapresentative value
 
 	- DeleteDP(DPId) : 	delete the specified DataPoint.
 	
-				** BUILD INSTRUCTIONS **
+** BUILD INSTRUCTIONS **
 
-JSON is described best here: http://www.json.org/
+	Change the working directory to the: SlightTSDBServer one, then run 'make' command
+
+** RUN THE SERVER **
+
+	In order to run the server from the shell:
+
+	SlightTSDB/SlightTSDBServer$ ./SlightTSDB -h
+		Slight Time Series DB version: 0.100000 
+		A.Franco -2013- (L) 
+
+		Usage: ./SlightTSDB [-s] [-v <level>] [-p <HTTP port>] [-D <data path>]
+
+		        -s Don't daemonise - logs to stderr
+		        -D Path to data tree 
+		        -p HTTP listen port
+		        -v Set verbosity level 0:none 1:critical, 2:error, 3:warning, 4:info, 5:debug, 6:trace
+ 
+
+*** COMPILE SWITCH ***
+
+	In order to tailor the Server is possible to change some compiler switch and costants in the file SlightTSDB.h:
+
+	#define TSS_USEAUTHENTICATION	- Specify the use of autentication (ssh) Not Yet implemented ! 
+	#define TSM_DOUBLE_TYPE		- Use DOUBLE format for store values : DOUBLE -> 8 bytes, FLOAT -> 4 bytes
+	#define TSM_LONG_TIMESTAMP	- Use MILLISECONDS precision for the time stamp : MILLSEC -> 8 bytes, SEC -> 4 bytes
+	#define TSM_PTHREAD_LOCKING	- Use Thread Locking strategy for some operations
+	#define TSM_REMOVE_DATAFILES	- Remove the data files once delete the DataPoint
+	#define TSM_JSON_OUTPUT		- Produce the output in JSON format
+	#define TSM_AUTOCORRECT_DB_STRUCT	- Do the authomatic conversion of DB from LONG/SHORT formats
+	#define TSM_CACHEPRESERVE	- Don't overwrite the circular buffer of the cache when full
+
+	#define TSM_MAX_METRICS	32	// Maximum number of metrics per data set
+	#define TSM_MAX_ACTIVEDP	225	// max number of active data points
+
+	#define TSM_MAXUNUSEDTIME 60	// Time in seconds after that an unused DP stream is closed and the cache is purged
+
+	#define TS_DATETIMEFORMAT "%d/%m/%Y %H:%M:%S"  - string format to display date/time values
 
 
-First up, how do I build?
-Add cJSON.c to your project, and put cJSON.h somewhere in the header search path.
-For example, to build the test app:
+**** Clients  ****
 
-gcc cJSON.c test.c -o test -lm
-./test
+	Some Example clients are in the SlightDBClient directory
+
+	...
+
+
+****************************************************************************
+ TO DO :
+ 	 * check the long data compilation mode & reconstruct
+ 	 * dump values with different time-printing format
+ 	 * use a dp in exclusive/public mode ... prevent multiple writes !
+ 	 * push publication mechanism !
+ 	 * adding "meta info" to DP and metrics
+
+****************************************************************************
+
+	CREDITS & TANKS 
+
+ Forked included software :
+
+ TimeStore (http://www.livesense.co.uk/timestore)
+ Copyright (C) 2012, 2013 Mike Stirling
+
+****************************************************************************
 
