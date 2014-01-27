@@ -1,9 +1,6 @@
-# -----------------  Slight TS DB make file make 
-# Auth : A.Franco
-# Ver 1.0
+# -----------------  Slight TS DB make file 
 #
-#---------------------------------------------------------
-#
+
 # define the C compiler to use
 CC = gcc
 
