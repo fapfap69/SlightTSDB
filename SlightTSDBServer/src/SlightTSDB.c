@@ -112,6 +112,7 @@ static void tsDaemonise(void) {
 	}
 
 	// Finally redirect the IO
+	fprintf(stderr, "TSDB Server redirect output on %s\n",TSS_LOG_FILE);
 	freopen("/dev/null", "r", stdin);
 	freopen("/dev/null", "w", stdout);
 	freopen(TSS_LOG_FILE, "a", stderr);

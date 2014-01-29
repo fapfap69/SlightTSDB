@@ -1503,7 +1503,7 @@ long __extractSerieFromDB(tsm_ctx_t *ctx,
 	int64_t filePtr;
 
 	filePtr = __tsmSearchValueInDB(ctx, startTime, ctx->recordIoBuffer, 1 );
-	while(filePtr >= 0) {
+	while(filePtr >= 0 && endTime >= (*(tsm_time *)ctx->recordIoBuffer) ) {
 #ifdef TSM_LONG_TIMESTAMP
 		sprintf(ptrD, "\n\t[%14.3f, %f],", ((double)*((tsm_time *)ctx->recordIoBuffer))/TSM_TIMESTAMP_PRECISION, *((tsm_data_t *)(ctx->recordIoBuffer+sizeof(tsm_time) + (sizeof(tsm_data_t) * metricId))) );
 #else
